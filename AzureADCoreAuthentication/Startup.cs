@@ -37,6 +37,14 @@ namespace AzureADCoreAuthentication
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(Roles.Users,
+                        policyBuilder => policyBuilder.RequireClaim("groups",
+                        Configuration.GetValue<string>(Roles.Users)));
+            });
+           
+
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

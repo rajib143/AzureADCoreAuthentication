@@ -11,7 +11,7 @@ using AzureADCoreAuthentication.Helpers;
 
 namespace AzureADCoreAuthentication.Controllers
 {
-    [Authorize(Policy = Roles.Member)]
+    [Authorize(Policy = Roles.Users)]
     public class HomeController : Controller
     {
         public IActionResult Index()
