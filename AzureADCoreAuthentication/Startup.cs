@@ -37,19 +37,27 @@ namespace AzureADCoreAuthentication
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(Roles.Users,
-                        policyBuilder => policyBuilder.RequireClaim("groups",
-                        Configuration.GetValue<string>(Roles.Users)));
-            });
-           
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(Roles.Member,
+            //            policyBuilder => policyBuilder.RequireClaim("groups",
+            //            Configuration.GetValue<string>(Roles.Member)));
+            //});
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy(Roles.Admininistration,
+            //            policyBuilder => policyBuilder.RequireClaim("groups",
+            //            Configuration.GetValue<string>(Roles.Admininistration)));
+            //});
+
+            
 
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 auth.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 auth.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
             })
                 .AddCookie()
                 .AddOpenIdConnect(options =>
@@ -115,6 +123,10 @@ namespace AzureADCoreAuthentication
                     };
                 });
 
+            services.AddAuthorization(options =>
+                      options.AddPolicy("User",
+                      policy => policy.RequireClaim(Roles.Member)));
+
             services.AddMvc(options =>
             {
                 var policy = new AuthorizationPolicyBuilder()
@@ -134,10 +146,10 @@ namespace AzureADCoreAuthentication
             else
             {
                 app.UseExceptionHandler("/Error");
-               // app.UseHsts();
+                // app.UseHsts();
             }
 
-           // app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

@@ -11,14 +11,14 @@ using AzureADCoreAuthentication.Helpers;
 
 namespace AzureADCoreAuthentication.Controllers
 {
-    [Authorize(Policy = Roles.Users)]
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-
+        [Authorize(Policy = "User")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -26,6 +26,7 @@ namespace AzureADCoreAuthentication.Controllers
             return View((ClaimsPrincipal)this.User);
         }
 
+        [Authorize(Policy = "User")]
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
