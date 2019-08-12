@@ -18,7 +18,7 @@ namespace AzureADCoreAuthentication.Controllers
         {
             return View();
         }
-        [Authorize(Policy = "User")]
+        [Authorize(Policy = "Member")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

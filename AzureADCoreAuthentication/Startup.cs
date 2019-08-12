@@ -123,9 +123,23 @@ namespace AzureADCoreAuthentication
                     };
                 });
 
+            //services.AddAuthorization(options =>
+            //          options.AddPolicy("User",
+            //          policy => policy.RequireClaim(Roles.Member)));
+
             services.AddAuthorization(options =>
-                      options.AddPolicy("User",
-                      policy => policy.RequireClaim(Roles.Member)));
+            {
+                options.AddPolicy("User",
+                        policyBuilder => policyBuilder.RequireClaim("groups",
+                        Roles.Users));
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Member",
+                        policyBuilder => policyBuilder.RequireClaim("groups",
+                        Roles.Member));
+            });
 
             services.AddMvc(options =>
             {
